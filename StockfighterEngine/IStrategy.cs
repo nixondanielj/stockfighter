@@ -9,6 +9,7 @@ namespace StockfighterEngine
     public interface IStrategy
     {
         Task<bool> IsComplete(Agent agent);
+        Task<bool> IsCancelled(Agent agent);
         Task Execute(Agent agent);
     }
 }

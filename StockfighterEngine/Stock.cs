@@ -10,14 +10,15 @@ namespace StockfighterEngine
 {
     public class Stock
     {
-        public int Owned { get; private set; }
+        public int SharesOwned { get; private set; }
         public int Pending { get; private set; }
+        public string Symbol { get; private set; }
 
         private Dictionary<long, OrderStatusResponse> MyOpenOrders { get; set; }
 
         internal Stock(string venue, string stock)
         {
-
+            Symbol = stock;
         }
 
         public void Purchase(OrderRequest request)
@@ -32,7 +33,7 @@ namespace StockfighterEngine
         {
             if(MyOpenOrders.ContainsKey(response.Id))
             {
-                Owned -= MyOpenOrders[response.Id].TotalFilled;
+                SharesOwned -= MyOpenOrders[response.Id].TotalFilled;
                 Pending -= MyOpenOrders[response.Id].Qty;
                 if (!response.Open)
                 {
@@ -43,7 +44,7 @@ namespace StockfighterEngine
             {
                 MyOpenOrders[response.Id] = response;
             }
-            Owned += response.TotalFilled;
+            SharesOwned += response.TotalFilled;
             Pending += response.Qty;
         }
 
