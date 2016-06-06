@@ -9,20 +9,32 @@ namespace StockfighterEngine
 {
     public class Exchange
     {
-        public string Symbol { get; set; }
+        public string Venue { get; set; }
+        
+        private Dictionary<string, Stock> Stocks { get; set; }
 
-        public Exchange(string symbol)
+        public Exchange(string venue)
         {
-            this.Symbol = symbol;
+            this.Venue = venue;
+            Stocks = new Dictionary<string, Stock>();
             using(var api = new Client())
             {
-                var task = api.GetHB(symbol);
+                var task = api.GetHB(venue);
                 task.Wait();
                 if(!task.Result)
                 {
-                    throw new Exception("Invalid symbol");
+                    throw new Exception("Invalid venue");
                 }
             }
+        }
+
+        public Stock GetStock(string ticker)
+        {
+            if(!Stocks.ContainsKey(ticker))
+            {
+                Stocks[ticker] = new Stock(Venue, ticker);
+            }
+            return Stocks[ticker];
         }
 
     }

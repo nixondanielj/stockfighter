@@ -22,5 +22,12 @@ namespace StockfighterClient.Responses
         public List<Fill> Fills { get; set; }
         public int TotalFilled { get; set; }
         public bool Open { get; set; }
+        public bool IsBuy
+        {
+            get
+            {
+                return Direction == "buy";
+            }
+        }
     }
 }

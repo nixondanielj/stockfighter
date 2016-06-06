@@ -12,6 +12,7 @@ namespace Runner
     {
         static void Main(string[] args)
         {
+            new ChockABlock().Run().Wait();
         }
     }
 }

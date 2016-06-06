@@ -23,6 +23,10 @@ namespace StockfighterClient
             client.DefaultRequestHeaders.Add("X-Starfighter-Authorization", "671e81eb23fab77549061c52e2d9d69b67428396");
         }
 
+        /// <summary>
+        /// Checks the heartbeat of the stockfighter API
+        /// </summary>
+        /// <returns></returns>
         public async Task<bool> GetHB()
         {
             var resp = await Get("/heartbeat");
@@ -30,17 +34,33 @@ namespace StockfighterClient
             return bresp.Ok;
         }
 
+        /// <summary>
+        /// Checks heartbeat of a specific venue - verifies venue exists and can be traded on
+        /// </summary>
+        /// <param name="venue"></param>
+        /// <returns></returns>
         public async Task<bool> GetHB(string venue)
         {
             var resp = await Get(string.Format("venues/{0}/heartbeat", venue));
             return (await resp.Content.ReadAsAsync<BaseResponse>()).Ok;
         }
 
+        /// <summary>
+        /// Lists available stocks on a given venue
+        /// </summary>
+        /// <param name="venue"></param>
+        /// <returns></returns>
         public async Task<StocksResponse> GetStocks(string venue)
         {
             return await Get<StocksResponse>("venues/{0}/stocks", venue);
         }
 
+        /// <summary>
+        /// Retrieves the orderbook for a stock
+        /// </summary>
+        /// <param name="venue"></param>
+        /// <param name="stock"></param>
+        /// <returns></returns>
         public async Task<OrderBookResponse> GetOrderBook(string venue, string stock)
         {
             return await Get<OrderBookResponse>("/venues/{0}/stocks/{1}", venue, stock);
